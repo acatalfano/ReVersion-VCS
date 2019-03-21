@@ -3,25 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReVersion_APIGateway", "ReVersion_APIGateway\ReVersion_APIGateway.csproj", "{75746C2E-6915-42C2-A96C-AB35C063EB07}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReVersion_APIGateway.Tests", "ReVersion_APIGateway.Tests\ReVersion_APIGateway.Tests.csproj", "{00543F3F-2E07-4E06-A94B-5F0EEFAF7DBF}"
-EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{75746C2E-6915-42C2-A96C-AB35C063EB07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75746C2E-6915-42C2-A96C-AB35C063EB07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75746C2E-6915-42C2-A96C-AB35C063EB07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75746C2E-6915-42C2-A96C-AB35C063EB07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{00543F3F-2E07-4E06-A94B-5F0EEFAF7DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00543F3F-2E07-4E06-A94B-5F0EEFAF7DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00543F3F-2E07-4E06-A94B-5F0EEFAF7DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00543F3F-2E07-4E06-A94B-5F0EEFAF7DBF}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
