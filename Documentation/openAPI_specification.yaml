@@ -1,0 +1,640 @@
+openapi: 3.0.0
+info:
+  description: This is an API for accessing the version control system hosted by ReVersion
+  version: "1.0.0-oas3"
+  title: ReVersion API
+  #license:
+    # TODO: change license info if necessary
+    #name: Apache 2.0
+    #url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+# TODO: hypermedia format for JSON
+#       e.g. application/vnd.collection+json, application/vnd.siren+json, application/ld+json, HAL, etc...
+paths:
+  /repositories:
+    get:
+      summary: Get a list of all repository names
+      operationId: getRepositories
+      responses:
+        '200':
+          $ref: '#/components/responses/ResourcesResponse'
+        '500':
+          description: Unexpected error
+    post:
+      operationId: createRepository
+      summary: create new repository
+      requestBody:
+        description: Repository name to create and metadata to log
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepositoryData'
+      responses:
+        '201':
+          $ref: '#/components/responses/ResourceCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/NamingConflict'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}:
+    delete:
+      summary: delete a repository
+      operationId: deleteRepository
+      parameters:
+        - $ref: '#/components/parameters/repositoryIdParam'
+      responses:
+        '204':
+          description: No Content. Sucessfully deleted repository
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/LockConflict'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}/branches:
+    parameters:
+      - $ref: '#/components/parameters/repositoryIdParam'
+    get:
+      summary: get a list of all branch names for this repository
+      operationId: getBranches
+      responses:
+        '200':
+          $ref: '#/components/responses/ResourcesResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+    post:
+      summary: create a new branch
+      operationId: createBranch
+      requestBody:
+        description: Branch name to create and metadata to log
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBranchData'
+      responses:
+        '201':
+          $ref: '#/components/responses/ResourceCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/NamingConflict'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}/branches/{branchId}:
+    parameters:
+      - $ref: '#/components/parameters/repositoryIdParam'
+      - $ref: '#/components/parameters/branchIdParam'
+    get:
+      summary: get a local copy of the latest version of the specified branch
+      operationId: getBranch
+      responses:
+        '200':
+          $ref: '#/components/responses/ResourcesResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+    put:
+      summary: commit changes to all applicable files
+      operationId: commitChanges
+      
+      requestBody:
+        description: Log Data with array of files to upload
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CommitFilesData'
+      
+      responses:
+        '200':
+          description: OK. Resources updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/CommitConflict'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}/branches/{branchId}/object:
+    parameters:
+      - $ref: '#/components/parameters/repositoryIdParam'
+      - $ref: '#/components/parameters/branchIdParam'
+      - $ref: '#/components/parameters/awsObjectKeyQueryParam'
+    get:
+      summary: get a specific file from the specified branch
+      operationId: getObject
+      responses:
+        '200':
+          $ref: '#/components/responses/FileResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}/branches/{branchId}/versions:
+    parameters:
+      - $ref: '#/components/parameters/repositoryIdParam'
+      - $ref: '#/components/parameters/branchIdParam'
+    get:
+      summary: get a list of all versions of the branch
+      operationId: getVersions
+      responses:
+        '200':
+          $ref: '#/components/responses/ResourcesResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}/branches/{branchId}/versions/{versionId}:
+    parameters:
+      - $ref: '#/components/parameters/repositoryIdParam'
+      - $ref: '#/components/parameters/branchIdParam'
+      - $ref: '#/components/parameters/versionIdParam'
+    get:
+      summary: get a local copy of a certain version of the specified branch
+      operationId: getVersion
+      responses:
+        '200':
+          $ref: '#/components/responses/ResourcesResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}/branches/{branchId}/versions/{versionId}/object:
+    parameters:
+      - $ref: '#/components/parameters/repositoryIdParam'
+      - $ref: '#/components/parameters/branchIdParam'
+      - $ref: '#/components/parameters/versionIdParam'
+      - $ref: '#/components/parameters/awsObjectKeyQueryParam'
+    get:
+      summary: get a specific file from the specified branch and version
+      operationId: getPastObject
+      responses:
+        '200':
+          $ref: '#/components/responses/FileResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}/branches/{branchId}/merge:
+    parameters:
+      - $ref: '#/components/parameters/repositoryIdParam'
+      - $ref: '#/components/parameters/branchIdParam'
+    put:
+      summary: merge the branch with its parent
+      operationId: mergeBranch
+      requestBody:
+        description: data to log the user and a message
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogData'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResourcesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/LockConflict'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}/branches/{branchId}/lock:
+    parameters:
+      - $ref: '#/components/parameters/repositoryIdParam'
+      - $ref: '#/components/parameters/branchIdParam'
+    put:
+      summary: put a lock on the branch
+      operationId: lockBranch
+      requestBody:
+        description: data to log the user and a message
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogData'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LockData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/LockConflict'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}/branches/{branchId}/unlock:
+    parameters:
+      - $ref: '#/components/parameters/repositoryIdParam'
+      - $ref: '#/components/parameters/branchIdParam'
+    put:
+      summary: remove the lock on the branch (cleanly)
+      operationId: unlockBranch
+      requestBody:
+        description: data to log the user and a message
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogData'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LockData'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/LockConflict'
+        '500':
+          description: Unexpected error
+  
+  /repositories/{repositoryId}/branches/{branchId}/force-unlock:
+    parameters:
+      - $ref: '#/components/parameters/repositoryIdParam'
+      - $ref: '#/components/parameters/branchIdParam'
+    put:
+      summary: break the lock on the branch
+      operationId: breakLock
+      requestBody:
+        description: data to log the user and a message
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogData'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LockData'
+        '204':
+          description: No Content. Already unlocked
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Unexpected error
+
+components:
+  schemas:
+    CommitFilesData:
+      allOf:
+        - $ref: '#/components/schemas/LogData'
+        - type: object
+          properties:
+            filename:
+              type: array
+              items:
+                type: string
+                format: base64
+          required:
+            - filename
+    RepositoryData:
+      allOf:
+        - $ref: '#/components/schemas/LogData'
+        - type: object
+          properties:
+            repositoryId:
+              type: string
+              description: name of the repository being created
+          required:
+            - repositoryID
+    NewBranchData:
+      allOf:
+        - $ref: '#/components/schemas/LogData'
+        - type: object
+          properties:
+            branchId:
+              type: string
+              description: name of the branch being created
+          required:
+            - branchId
+    NotFoundErrorMessage:
+      type: object
+      properties:
+        parameterName:
+          type: string
+          description: the name of the parameter that caused the not-found error response
+          enum:
+            - repositoryId
+            - branchId
+            - versionId
+        parameterValue:
+          type: string
+          description: the value of the parameter that could not be found
+      required:
+        - parameterName
+        - parameterValue
+    ConflictErrorMessage:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+        conflictType:
+          type: string
+          enum:
+            - lock
+            - version
+            - naming
+      required:
+        - errorMessage
+        - conflictType
+    LockConflictErrorMessage:
+      allOf:
+        - $ref: '#/components/schemas/ConflictErrorMessage'
+        - $ref: '#/components/schemas/LockData'
+    VersionConflictErrorMessage:
+      allOf:
+        - $ref: '#/components/schemas/ConflictErrorMessage'
+        - $ref: '#/components/schemas/VersionInformation'
+    NamingConflictErrorMessage:
+      allOf:
+        - $ref: '#/components/schemas/ConflictErrorMessage'
+    LockData:
+      allOf:
+        - $ref: '#/components/schemas/LogData'
+        - $ref: '#/components/schemas/DateTimeType'
+        - type: object
+          properties:
+            lockedBranchId:
+              type: string
+              description: for use in the conflict response to a repository-delete request
+          required:
+            - lockedBranchId
+    VersionInformation:
+      type: object
+      description: summary of the latest version information
+      properties:
+        versionId:
+          type: string
+          description: version identifier
+        dateTime:
+          $ref: '#/components/schemas/DateTimeType'
+        commitMessage:
+          $ref: '#/components/schemas/LogData'
+      required:
+        - versionId
+        - dateTime
+        - commitMessage
+    CommitConflictErrorMessage:
+      type: object
+      description: summary of commit error, including alternative lock or version error information
+      properties:
+        errorInfo:
+          $ref: '#/components/schemas/ConflictErrorMessage'
+        lockInfo:
+          $ref: '#/components/schemas/LockData'
+        versionInfo:
+          $ref: '#/components/schemas/VersionInformation'
+      required:
+        - errorInfo
+    DateTimeType:
+      type: object
+      properties:
+        date:
+          type: object
+          properties:
+            day:
+              type: integer
+              format: int32
+              description: day of the month
+            month:
+              type: integer
+              format: int32
+              description: month of the year
+            year:
+              type: integer
+              format: int32
+              description: year value
+          required:
+            - day
+            - month
+            - year
+        time:
+          type: object
+          properties:
+            hours:
+              type: integer
+              format: int32
+              description: hours value in military time (no AM/PM)
+            minutes:
+              type: integer
+              format: int32
+              description: minutes value of the hour
+            seconds:
+              type: number
+              format: float
+              description: seconds value as a decimal to encode partial seconds
+          required:
+            - hours
+            - minutes
+            - seconds
+      required:
+        - date
+        - time
+    LogData:
+      type: object
+      description: username and message logged with the update action performed
+      properties:
+        userName:
+          type: string
+          description: name of user making the modification
+        message:
+          type: string
+          description: message attached to the modification
+      required:
+        - userName
+        - message
+    BadRequestData:
+      type: object
+      properties:
+        missingProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadRequestPropertyInfo'
+        malformedProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadRequestPropertyInfo'
+      required:
+        - missingProperties
+        - malformedProperties
+    BadRequestPropertyInfo:
+      type: object
+      properties:
+        propertyName:
+          type: string
+        propertyParent:
+          type: string
+        errorDescription:
+          type: string
+      required:
+        - propertyName
+        - propertyParent
+        - errorDescription
+    ResourceList:
+      type: object
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceItem'
+      required:
+        - resources
+    ResourceItem:
+      type: object
+      properties:
+        href:
+          type: string
+          format: uri
+        displayData:
+          type: string
+      required:
+        - href
+        - displayData
+    StringObject:
+      type: string
+      format: base64
+  
+  parameters:
+    repositoryIdParam:
+      in: path
+      name: repositoryId
+      required: true
+      description: the ID of the repository being accessed
+      schema:
+        type: string
+    branchIdParam:
+      in: path
+      name: branchId
+      required: true
+      description: the ID of the branch being accessed
+      schema:
+        type: string
+    versionIdParam:
+      in: path
+      name: versionId
+      required: true
+      description: the ID of the version being accessed
+      schema:
+        type: string
+    awsObjectKeyQueryParam:
+      in: query
+      name: awsObjectKey
+      required: true
+      schema:
+        type: string
+      allowReserved: true
+      description: object key locating the specific object in the bucket on Amazon S3
+                    (including "/" characters, unencoded)
+  
+  responses:
+    LockConflict:
+      description: conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LockConflictErrorMessage'
+    VersionConflict:
+      description: conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VersionConflictErrorMessage'
+    NamingConflict:
+      description: conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NamingConflictErrorMessage'
+    CommitConflict:
+      description: conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommitConflictErrorMessage'
+    NotFound:
+      description: not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFoundErrorMessage'
+    BadRequest:
+      description: bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadRequestData'
+    FileResponse:
+      description: OK
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/StringObject'
+    # TODO: application/vnd.collection+json, application/vnd.siren+json, application/ld+json, HAL, etc... (instead of application/json)
+    ResourcesResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResourceList'
+    ResourceCreated:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resourceName:
+                type: string
+              href:
+                type: string
+                format: uri
+            required:
+              - resourceName
+              - href
+  
+  #securitySchemes: # TODO (maybe)
+# TODO: set up servers value
+#servers:
+#  - url: '{server}/v1'
+#    variables:
+#      server:
+#        default: https://aws.url.com # TODO
