@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ReVersionLambdaProxiesSAM
+namespace ReVersionVCS_API_Lambdas
 {
     public class Blog
     {

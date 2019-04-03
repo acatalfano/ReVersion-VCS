@@ -32,12 +32,12 @@ If already installed check if new version is available.
 
 Execute unit tests
 ```
-    cd "ReVersionLambdaProxiesSAM/test/ReVersionLambdaProxiesSAM.Tests"
+    cd "ReVersionVCS_API_Lambdas/test/ReVersionVCS_API_Lambdas.Tests"
     dotnet test
 ```
 
 Deploy application
 ```
-    cd "ReVersionLambdaProxiesSAM/src/ReVersionLambdaProxiesSAM"
+    cd "ReVersionVCS_API_Lambdas/src/ReVersionVCS_API_Lambdas"
     dotnet lambda deploy-serverless
 ```

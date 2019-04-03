@@ -12,7 +12,7 @@
   "region" : "us-east-1",
   "configuration": "Release",
   "framework": "netcoreapp2.1",
-  "s3-prefix": "ReVersionLambdaProxiesSAM/",
+  "s3-prefix": "ReVersionVCS_API_Lambdas/",
   "template": "serverless.template",
   "template-parameters": "ShouldCreateTable=true;BlogTableName="
 }
