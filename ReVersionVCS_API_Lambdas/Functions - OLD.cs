@@ -1,5 +1,5 @@
+/*
 using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -13,51 +13,26 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
+//[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
-namespace ReVersionVCS_API_Lambdas
+namespace ReVersionVCS_API_Lambdas__OLD
 {
-    public partial class Functions
+    public class Functions
     {
-        readonly JsonSerializerSettings jsonSerializerSettings;
-
         // This const is the name of the environment variable that the serverless.template will use to set
         // the name of the DynamoDB table used to store blog posts.
         const string TABLENAME_ENVIRONMENT_VARIABLE_LOOKUP = "BlogTable";
 
-        
-        const string S3_REGION_ENVIRONMENT_VARIABLE_LOOKUP = "S3_REGION";
-
-        // RDS_DB_{X}
-        // X is one of (HOSTNAME, PORT, NAME, USERNAME, PASSWORD)
-        
-        private readonly string s3BucketRegionName;
-
         public const string ID_QUERY_STRING_NAME = "Id";
         IDynamoDBContext DDBContext { get; set; }
-        
+
         /// <summary>
         /// Default constructor that Lambda will invoke.
         /// </summary>
         public Functions()
         {
-            // set jsonSerializerSettings to properly handle Camel-Case Names
-            //  i.e. the JSON property "fooBar" serializes to the C# property "FooBar"
-            DefaultContractResolver contractResolver = new DefaultContractResolver
-            {
-                NamingStrategy = new CamelCaseNamingStrategy()
-            };
-            jsonSerializerSettings = new JsonSerializerSettings
-            {
-                ContractResolver = contractResolver
-            };
-
-            
-            s3BucketRegionName = Environment.GetEnvironmentVariable(S3_REGION_ENVIRONMENT_VARIABLE_LOOKUP);
-
             // Check to see if a table name was passed in through environment variables and if so 
             // add the table mapping.
             var tableName = System.Environment.GetEnvironmentVariable(TABLENAME_ENVIRONMENT_VARIABLE_LOOKUP);
@@ -69,7 +44,7 @@ namespace ReVersionVCS_API_Lambdas
             var config = new DynamoDBContextConfig { Conversion = DynamoDBEntryConversion.V2 };
             this.DDBContext = new DynamoDBContext(new AmazonDynamoDBClient(), config);
         }
-        /*
+
         /// <summary>
         /// Constructor used for testing passing in a preconfigured DynamoDB client.
         /// </summary>
@@ -85,7 +60,6 @@ namespace ReVersionVCS_API_Lambdas
             var config = new DynamoDBContextConfig { Conversion = DynamoDBEntryConversion.V2 };
             this.DDBContext = new DynamoDBContext(ddbClient, config);
         }
-        */
 
         /// <summary>
         /// A Lambda function that returns back a page worth of blog posts.
@@ -204,16 +178,6 @@ namespace ReVersionVCS_API_Lambdas
                 StatusCode = (int)HttpStatusCode.OK
             };
         }
-
-        // THROWS: via Convert.FromBase64String():
-        //                      ArgumentNullException
-        //                      FormatException (not base64 format)
-        //         via Encoding.GetString():
-        //                      ArgumentException (byte array contains invalid Unicode code points)
-        //                      ArgumentNullException
-        //                      DecoderFallbackException (fallback occurred due to character encoding in .NET AND
-        //                                                  "DecoderFallback" is set to "DecoderExceptionFallback")
-        private string DecodeBase64String(string str)
-            => Encoding.UTF8.GetString(Convert.FromBase64String(str));
     }
 }
+*/

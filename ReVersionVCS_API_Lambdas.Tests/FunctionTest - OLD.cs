@@ -1,3 +1,4 @@
+/*
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,7 @@ using Newtonsoft.Json;
 
 using Xunit;
 
-/*
-namespace ReVersionVCS_API_Lambdas.Tests.Full
+namespace ReVersionVCS_API_Lambdas__OLD.Tests
 {
     public class FunctionTest : IDisposable
     { 

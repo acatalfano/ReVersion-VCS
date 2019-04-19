@@ -14,6 +14,9 @@
           "200" : {
             "$ref" : "#/components/responses/ResourcesResponse"
           },
+          "401" : {
+            "description" : "Authentication failed"
+          },
           "500" : {
             "description" : "Unexpected error"
           }
@@ -40,6 +43,9 @@
           "400" : {
             "$ref" : "#/components/responses/BadRequest"
           },
+          "401" : {
+            "description" : "Authentication failed"
+          },
           "409" : {
             "$ref" : "#/components/responses/NamingConflict"
           },
@@ -60,8 +66,11 @@
           "204" : {
             "description" : "No Content. Sucessfully deleted repository"
           },
-          "400" : {
-            "$ref" : "#/components/responses/BadRequest"
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
           },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
@@ -85,6 +94,12 @@
         "responses" : {
           "200" : {
             "$ref" : "#/components/responses/ResourcesResponse"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
           },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
@@ -114,6 +129,12 @@
           "400" : {
             "$ref" : "#/components/responses/BadRequest"
           },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
+          },
           "409" : {
             "$ref" : "#/components/responses/NamingConflict"
           },
@@ -135,6 +156,12 @@
         "responses" : {
           "200" : {
             "$ref" : "#/components/responses/ResourcesResponse"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
           },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
@@ -169,8 +196,17 @@
               }
             }
           },
+          "204" : {
+            "description" : "No changes to commit"
+          },
           "400" : {
             "$ref" : "#/components/responses/BadRequest"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
           },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
@@ -199,6 +235,12 @@
           "200" : {
             "$ref" : "#/components/responses/FileResponse"
           },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
+          },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
           },
@@ -220,6 +262,12 @@
         "responses" : {
           "200" : {
             "$ref" : "#/components/responses/ResourcesResponse"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
           },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
@@ -244,6 +292,12 @@
         "responses" : {
           "200" : {
             "$ref" : "#/components/responses/ResourcesResponse"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
           },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
@@ -270,6 +324,12 @@
         "responses" : {
           "200" : {
             "$ref" : "#/components/responses/FileResponse"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
           },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
@@ -306,6 +366,12 @@
           },
           "400" : {
             "$ref" : "#/components/responses/BadRequest"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
           },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
@@ -353,6 +419,12 @@
           "400" : {
             "$ref" : "#/components/responses/BadRequest"
           },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
+          },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
           },
@@ -398,6 +470,12 @@
           },
           "400" : {
             "$ref" : "#/components/responses/BadRequest"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
           },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
@@ -447,6 +525,149 @@
           },
           "400" : {
             "$ref" : "#/components/responses/BadRequest"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Not authorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/NotFound"
+          },
+          "500" : {
+            "description" : "Unexpected error"
+          }
+        }
+      }
+    },
+    "/repositories/{repositoryId}/request-permission" : {
+      "parameters" : [ {
+        "$ref" : "#/components/parameters/repositoryIdParam"
+      } ],
+      "put" : {
+        "summary" : "request permission to access this repository",
+        "operationId" : "requestPermission",
+        "requestBody" : {
+          "description" : "data to log the user and a message",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LogData"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Request submitted"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/BadRequest"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/NotFound"
+          },
+          "409" : {
+            "description" : "You own this resource"
+          },
+          "500" : {
+            "description" : "Unexpected error"
+          }
+        }
+      }
+    },
+    "/permission-requests" : {
+      "get" : {
+        "summary" : "get a list of pending requests to access repositories owned by the user submitting this request",
+        "operationId" : "getPermissionRequests",
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/ResourcesResponse"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "500" : {
+            "description" : "Unexpected error"
+          }
+        }
+      }
+    },
+    "/permission-requests/{requestId}/grant" : {
+      "parameters" : [ {
+        "$ref" : "#/components/parameters/requestIdParam"
+      } ],
+      "put" : {
+        "summary" : "grant the requested access",
+        "operationId" : "grantPermission",
+        "requestBody" : {
+          "description" : "data to log the user and a message",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LogData"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "No content. Permission successfully granted"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/BadRequest"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Forbidden. You are not the owner of this repository"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/NotFound"
+          },
+          "500" : {
+            "description" : "Unexpected error"
+          }
+        }
+      }
+    },
+    "/permission-requests/{requestId}/deny" : {
+      "parameters" : [ {
+        "$ref" : "#/components/parameters/requestIdParam"
+      } ],
+      "put" : {
+        "summary" : "deny the requested access",
+        "operationId" : "denyPermission",
+        "requestBody" : {
+          "description" : "data to log the user and a message",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LogData"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "No content. Permission successfully denied"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/BadRequest"
+          },
+          "401" : {
+            "description" : "Authentication failed"
+          },
+          "403" : {
+            "description" : "Forbidden. You are not the owner of this repository"
           },
           "404" : {
             "$ref" : "#/components/responses/NotFound"
@@ -664,39 +885,6 @@
         },
         "required" : [ "userName", "message" ]
       },
-      "BadRequestData" : {
-        "type" : "object",
-        "properties" : {
-          "missingProperties" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BadRequestPropertyInfo"
-            }
-          },
-          "malformedProperties" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BadRequestPropertyInfo"
-            }
-          }
-        },
-        "required" : [ "missingProperties", "malformedProperties" ]
-      },
-      "BadRequestPropertyInfo" : {
-        "type" : "object",
-        "properties" : {
-          "propertyName" : {
-            "type" : "string"
-          },
-          "propertyParent" : {
-            "type" : "string"
-          },
-          "errorDescription" : {
-            "type" : "string"
-          }
-        },
-        "required" : [ "propertyName", "propertyParent", "errorDescription" ]
-      },
       "ResourceList" : {
         "type" : "object",
         "properties" : {
@@ -718,6 +906,14 @@
           },
           "displayData" : {
             "type" : "string"
+          },
+          "isOwner" : {
+            "type" : "boolean",
+            "description" : "true if the user in question owns this resource"
+          },
+          "isPermitted" : {
+            "type" : "boolean",
+            "description" : "true if the user in question is permitted to access this resource"
           }
         },
         "required" : [ "href", "displayData" ]
@@ -764,6 +960,15 @@
         },
         "allowReserved" : true,
         "description" : "object key locating the specific object in the bucket on Amazon S3 (including \"/\" characters, unencoded)"
+      },
+      "requestIdParam" : {
+        "in" : "path",
+        "name" : "requestId",
+        "required" : true,
+        "description" : "the ID of the request being accessed",
+        "schema" : {
+          "type" : "string"
+        }
       }
     },
     "responses" : {
@@ -818,14 +1023,7 @@
         }
       },
       "BadRequest" : {
-        "description" : "bad request",
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "$ref" : "#/components/schemas/BadRequestData"
-            }
-          }
-        }
+        "description" : "bad request"
       },
       "FileResponse" : {
         "description" : "OK",
@@ -852,17 +1050,7 @@
         "content" : {
           "application/json" : {
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "resourceName" : {
-                  "type" : "string"
-                },
-                "href" : {
-                  "type" : "string",
-                  "format" : "uri"
-                }
-              },
-              "required" : [ "resourceName", "href" ]
+              "$ref" : "#/components/schemas/ResourceItem"
             }
           }
         }
