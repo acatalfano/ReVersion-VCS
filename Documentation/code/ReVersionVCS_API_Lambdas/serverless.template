@@ -34,23 +34,7 @@
 		"Type" : "String",
 		"Description" : "Hostname (endpoint) for PostgreSQL database",
 		"MinLength" : "1"
-	},
-	"DBAllocatedStorage" : {
-		"Type": "String",
-		"Description": "Allocated storage size in GB",
-		"MinLength" : "1"
-	},
-	"DBInstanceClass" : {
-		"Type" : "string",
-		"Description" : "Name of the compute and memory capacity classes of the DB instance",
-		"MinLength" : "1"
-	},
-	"DBSecurityCIDRIPAddress" : {
-		"Type" : "string",
-		"Description" : "The IP to authorize as ingress for the PostgreSQL Instance's Security Group Rule",
-		"MinLength" : "1"
 	}
-	
   },
 
   "Resources" : {
@@ -668,31 +652,6 @@
           }
         }
       }
-    },
-
-	"ReVersionDatabaseInstance" : {
-		"Type": "AWS::RDS::DBInstance",
-		"Properties": {
-			"DBName": { "Ref": "DBName" },
-			"AllocatedStorage": { "Ref": "DBAllocatedStorage" },
-			"DBInstanceClass": { "Ref": "DBInstanceClass" },
-			"Engine": "postgres",
-			"MasterUsername": { "Ref": "DBUsername" },
-			"MasterUserPassword": { "Ref": "DBPassword" },
-			"DBSecurityGroups" : [
-				{ "Ref" : "MyDbSecurityByCIDRIPGroup" }
-			]
-		}
-	},
-
-	"MyDbSecurityByCIDRIPGroup" : {
-		"Type" : "AWS::RDS::DBSecurityGroup",
-		"Properties" : {
-			"GroupDescription" : "Ingress for CIDRIP",
-			"DBSecurityGroupIngress" : {
-				"CIDRIP": { "Ref" : "DBSecurityCIDRIPAddress" }
-			}
-		}
-	}
+    }
   }
 }

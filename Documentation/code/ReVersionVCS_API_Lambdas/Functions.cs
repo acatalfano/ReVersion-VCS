@@ -151,7 +151,6 @@ namespace ReVersionVCS_API_Lambdas
             }
         }
 
-        // TODO TODO TODO: Delete all of the repository's buckets!
         /// <summary>
         /// A Lambda function that deletes an entire repository
         /// </summary>

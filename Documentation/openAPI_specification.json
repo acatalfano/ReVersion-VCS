@@ -777,16 +777,17 @@
         "allOf" : [ {
           "$ref" : "#/components/schemas/LogData"
         }, {
-          "$ref" : "#/components/schemas/DateTimeType"
-        }, {
           "type" : "object",
           "properties" : {
+            "timestamp" : {
+              "type" : "string"
+            },
             "lockedBranchId" : {
               "type" : "string",
               "description" : "for use in the conflict response to a repository-delete request"
             }
           },
-          "required" : [ "lockedBranchId" ]
+          "required" : [ "lockedBranchId", "timestamp" ]
         } ]
       },
       "VersionInformation" : {
@@ -797,14 +798,14 @@
             "type" : "string",
             "description" : "version identifier"
           },
-          "dateTime" : {
-            "$ref" : "#/components/schemas/DateTimeType"
+          "timestamp" : {
+            "type" : "string"
           },
           "commitMessage" : {
             "$ref" : "#/components/schemas/LogData"
           }
         },
-        "required" : [ "versionId", "dateTime", "commitMessage" ]
+        "required" : [ "versionId", "timestamp", "commitMessage" ]
       },
       "CommitConflictErrorMessage" : {
         "type" : "object",
@@ -821,54 +822,6 @@
           }
         },
         "required" : [ "errorInfo" ]
-      },
-      "DateTimeType" : {
-        "type" : "object",
-        "properties" : {
-          "date" : {
-            "type" : "object",
-            "properties" : {
-              "day" : {
-                "type" : "integer",
-                "format" : "int32",
-                "description" : "day of the month"
-              },
-              "month" : {
-                "type" : "integer",
-                "format" : "int32",
-                "description" : "month of the year"
-              },
-              "year" : {
-                "type" : "integer",
-                "format" : "int32",
-                "description" : "year value"
-              }
-            },
-            "required" : [ "day", "month", "year" ]
-          },
-          "time" : {
-            "type" : "object",
-            "properties" : {
-              "hours" : {
-                "type" : "integer",
-                "format" : "int32",
-                "description" : "hours value in military time (no AM/PM)"
-              },
-              "minutes" : {
-                "type" : "integer",
-                "format" : "int32",
-                "description" : "minutes value of the hour"
-              },
-              "seconds" : {
-                "type" : "number",
-                "format" : "float",
-                "description" : "seconds value as a decimal to encode partial seconds"
-              }
-            },
-            "required" : [ "hours", "minutes", "seconds" ]
-          }
-        },
-        "required" : [ "date", "time" ]
       },
       "LogData" : {
         "type" : "object",
@@ -907,13 +860,8 @@
           "displayData" : {
             "type" : "string"
           },
-          "isOwner" : {
-            "type" : "boolean",
-            "description" : "true if the user in question owns this resource"
-          },
-          "isPermitted" : {
-            "type" : "boolean",
-            "description" : "true if the user in question is permitted to access this resource"
+          "owner" : {
+            "type" : "string"
           }
         },
         "required" : [ "href", "displayData" ]
