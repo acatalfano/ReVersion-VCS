@@ -6,6 +6,8 @@
 Documentation/*.sql
 Documentation/*.drawio
 Documentation/lambdaPseudocode.txt
+Documentation/_minted-importCode/*
+Documentation/code/*
 
 # User-specific files
 *.suo

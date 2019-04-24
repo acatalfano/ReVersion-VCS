@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
   "Transform" : "AWS::Serverless-2016-10-31",
-  "Description" : "AWS Serverless API that exposes the add, remove and get operations for a blogging platform using Amazon DynamoDB.",
+  "Description" : "AWS Serverless API that exposes functions for interfacing with the ReVersion VCS.",
   "Parameters" : {
 	"DBName" : {
 		"Type" : "String",
@@ -41,16 +41,15 @@
 		"MinLength" : "1"
 	},
 	"DBInstanceClass" : {
-		"Type" : "string",
+		"Type" : "String",
 		"Description" : "Name of the compute and memory capacity classes of the DB instance",
 		"MinLength" : "1"
 	},
-	"DBSecurityCIDRIPAddress" : {
-		"Type" : "string",
-		"Description" : "The IP to authorize as ingress for the PostgreSQL Instance's Security Group Rule",
+	"VPCSecurityGroupID" : {
+		"Type" : "String",
+		"Description" : "ID of VPC Security Group for the Database",
 		"MinLength" : "1"
 	}
-	
   },
 
   "Resources" : {
@@ -679,19 +678,10 @@
 			"Engine": "postgres",
 			"MasterUsername": { "Ref": "DBUsername" },
 			"MasterUserPassword": { "Ref": "DBPassword" },
-			"DBSecurityGroups" : [
-				{ "Ref" : "MyDbSecurityByCIDRIPGroup" }
-			]
-		}
-	},
-
-	"MyDbSecurityByCIDRIPGroup" : {
-		"Type" : "AWS::RDS::DBSecurityGroup",
-		"Properties" : {
-			"GroupDescription" : "Ingress for CIDRIP",
-			"DBSecurityGroupIngress" : {
-				"CIDRIP": { "Ref" : "DBSecurityCIDRIPAddress" }
-			}
+			"VPCSecurityGroups": [
+				{ "Ref" : "VPCSecurityGroupID" }
+			],
+			"PubliclyAccessible" : false
 		}
 	}
   }
