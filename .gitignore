@@ -6,8 +6,19 @@
 Documentation/*.sql
 Documentation/*.drawio
 Documentation/lambdaPseudocode.txt
-Documentation/_minted-importCode/*
-Documentation/code/*
+Documentation/_minted-importCode/
+Documentation/code/
+Documentation/importCode.*
+*.docx
+Documentation/full_design_template.png
+Documentation/postgres_output.png
+*.xcf
+Documentation/bucket_content*.png
+Documentation/buckets*.png
+Documentation/cloudwatch*.png
+Documentation/database*.png
+Documentation/database*.jpg
+Documentation/apiGateway.png
 
 # User-specific files
 *.suo
