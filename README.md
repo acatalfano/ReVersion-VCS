@@ -4,5 +4,5 @@ AWS-Based SaaS Version Control System Project
 ## Architecture
 <img src="/Documentation/architecture.png" alt="AWS Architecture Diagram">
 
-## NOTA BENE
-Incomplete, currently in progress. Will be finished in mid-to-late April
+## WIP
+The backend is mostly complete, but the frontend is still being developed.  Frontend source is available at <a href="../../../ReVersion-VCS-Frontend">the ReVersion VCS Frontend repository</a>
